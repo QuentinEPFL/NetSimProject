@@ -55,13 +55,15 @@ bool Network :: add_link(const size_t& Node1, const size_t& Node2)
 size_t Network :: random_connect(const double& mean_deg)
 {
 	links.clear();
-	for(int i(0);i<values.size();++i)
+	int n(0);
+	n=values.size();
+	for(int i(0);i<n;++i)
 	{
 		size_t deg;
 		deg = RNG.poisson(mean_deg);
 		for(int j(0);j<deg;++j)
 		{
-			while(!add_link(i,RNG.uniform_double(0,values.size())) and ((degree(i)<values.size()-1))) continue;
+			while(!add_link(i,RNG.uniform_double(0,n)) and ((degree(i)<n-1))) continue;
 		}
 	}
 	return (links.size()/2);
