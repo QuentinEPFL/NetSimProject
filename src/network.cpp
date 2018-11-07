@@ -12,34 +12,34 @@ using namespace std;
  
 
 /*! Resizes the list of nodes (\ref values) */
-void Network :: resize(const size_t& s)
+void Network :: resize(const size_t& NewSize)
 {
 	map<size_t,size_t>::iterator it;
 	values.clear();
-	values.resize(s);
+	values.resize(NewSize);
 	RNG.normal(values,0,1);
 	links.clear();
 }
 
 
 /*! Adds a bidirectional link between two nodes
-  @param[in] a,b the indexes if the two nodes 
+  @param[in] Node1,Node2 the indexes if the two nodes 
   @param[out] success the link was succesfully inserted
  */
-bool Network :: add_link(const size_t& a, const size_t& b)
+bool Network :: add_link(const size_t& Node1, const size_t& Node2)
 {
-	if(a==b or a>=values.size() or b>=values.size()) return false;
+	if(Node1==Node2 or Node1>=values.size() or Node2>=values.size()) return false;
 	else
 	{
 		for(auto I : links)
 		{
-			if((I.first==a or I.first==b) and (I.second == a or I.second==b))
+			if((I.first==Node1 or I.first==Node2) and (I.second == Node1 or I.second==Node2))
 			{
 				return false;
 			}
 		}
-		links.insert(make_pair(a,b));
-		links.insert(make_pair(b,a));
+		links.insert(make_pair(Node1,Node2));
+		links.insert(make_pair(Node2,Node1));
 		return true;
 	}
 	return false;
@@ -72,11 +72,11 @@ size_t Network :: random_connect(const double& mean_deg)
   @param[in] vector of new node values
   @param[out] number of nodes succesfully reset
  */
-size_t Network :: set_values(const std::vector<double>& val)
+size_t Network :: set_values(const std::vector<double>& NewValues)
 {
 	values.clear();
-	values=val;
-	return (val.size());
+	values=NewValues;
+	return (NewValues.size());
 }
 
 
@@ -113,13 +113,13 @@ vector<double> Network :: sorted_values() const
 /*! All neighbors (linked) nodes of node no *n* */
 std::vector<size_t> Network :: neighbors(const size_t& n) const
 {
-	vector<size_t> neig;
+	vector<size_t> neigh;
 	for (auto i : links)
 	{
 		if(i.first==n)
 		{
-			neig.push_back(i.second);
+			neigh.push_back(i.second);
 		}
 	}
-	return neig;
+	return neigh;
 }
